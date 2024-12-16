@@ -79,11 +79,11 @@ extension UDS {
                     return try await self.adapter.sendUDS(message)
                 }
 
-                let requestString = "\(message.id, radix: .hex),\(payload, radix: .hex, toWidth: 2)\n"
-                
+                let requestString = "\(message.id, radix: .hex),\(payload.map { String(format: "%02X", $0) }.joined())\n"
+
                 do {
                     let reply = try await self.adapter.sendUDS(message)
-                    let replyString = "\(reply.id, radix: .hex),\(reply.bytes, radix: .hex, toWidth: 2)\n"
+                    let replyString = "\(reply.id, radix: .hex),\(reply.bytes.map { String(format: "%02X", $0) }.joined())\n"
 
                     self.logQ.async {
                         try? logFile.write(contentsOf: requestString.data(using: .utf8)!)

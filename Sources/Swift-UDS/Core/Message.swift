@@ -55,7 +55,7 @@ extension UDS.Message: CustomStringConvertible {
         let id = "\(self.id, radix: .hex)"
         let endIndex = min(self.bytes.endIndex, 16)
         let bytes: [UInt8] = Array(self.bytes[0..<endIndex])
-        let message = "\(bytes, radix: .hex, toWidth: 2)"
+        let message = "\(bytes.map { String(format: "%02X", $0) }.joined())"
         let truncated = endIndex < self.bytes.endIndex ? " (...)" : ""
         return "\(id) [\(bytes.count)] \(message)\(truncated)"
     }

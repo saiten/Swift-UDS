@@ -50,7 +50,7 @@ private extension UDS.KWP.Decoder {
             //FIXME: Should we check the checksum and filter invalid frames?
             //let checksum = chunk[7]
             guard frame == expectedFrame else {
-                throw UDS.Error.decoderError(string: "Expected frame \(expectedFrame), but got \(frame) in chunk \(chunk, radix: .hex, prefix: true, toWidth: 2)")
+                throw UDS.Error.decoderError(string: "Expected frame \(expectedFrame), but got \(frame) in chunk \(chunk.map { String(format: "%02X", $0) }.joined())")
             }
             if frame == 1 {
                 result.append(chunk[0])

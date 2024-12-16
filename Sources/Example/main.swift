@@ -96,7 +96,7 @@ func main() async {
     print("Connecting to \(url!)…")
 
     do {
-        let streams = try await Stream.CC_getStreamPair(to: url, timeout: 3)
+        let streams = try await Stream.CC_getStreamPair(to: url)
         adapter = UDS.GenericSerialAdapter(inputStream: streams.0, outputStream: streams.1)
         adapter.connect(via: .auto)
     } catch {
