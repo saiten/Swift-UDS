@@ -326,12 +326,12 @@ extension UDS.GenericSerialAdapter {
                 try await self.post(.stnCanSegmentationTimeouts(flowControl: 255, consecutiveFrame: 255))
                 try await self.post(.stnCanSegmentationTransmit(on: true))
             }
-            do {
-                _ = try await self.post(.probeAutoSegmentation)
-                self.hasAutoSegmentation = true
-            } catch {
-                self.hasAutoSegmentation = false
-            }
+//            do {
+//                _ = try await self.post(.probeAutoSegmentation)
+//                self.hasAutoSegmentation = true
+//            } catch {
+//                self.hasAutoSegmentation = false
+//            }
             let smallFrameNoResponseResult: String = try await self.send(.probeSmallFrameNoResponse)
             self.hasSmallFrameNoResponse = smallFrameNoResponseResult.CC_trimmed().isEmpty
         }

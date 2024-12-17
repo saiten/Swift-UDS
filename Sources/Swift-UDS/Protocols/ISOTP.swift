@@ -71,8 +71,9 @@ public extension UDS.ISOTP {
         /// Decode a byte stream consisting on multiple individual concatenated frames by removing the protocol framing bytes as per ISOTP
         public func decode(_ bytes: [UInt8]) throws -> [UInt8] {
             guard bytes.count > 0 else { throw UDS.Error.decoderError(string: "Message too small (0 bytes)") }
-
-            let unframedPayload = bytes.count < 9 ? try self.decodeSingleFrame(payload: bytes) : try self.decodeMultiFrame(payload: bytes)
+            let pciHi = bytes[0]
+            let unframedPayload = pciHi & 0xF0 == 0x10 ? try self.decodeMultiFrame(payload: bytes) : try self.decodeSingleFrame(payload: bytes)
+//            let unframedPayload = bytes.count < 9 ? try self.decodeSingleFrame(payload: bytes) : try self.decodeMultiFrame(payload: bytes)
             return unframedPayload
         }
         

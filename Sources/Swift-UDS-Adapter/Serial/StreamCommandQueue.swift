@@ -232,7 +232,7 @@ private extension StreamCommandQueue {
         guard self.input.streamStatus == .open else { return self.input.open() }
         guard self.output.streamStatus == .open else { return self.output.open() }
         guard self.output.hasSpaceAvailable else { return }
-        guard let command = self.activeCommand else { fatalError() }
+        guard let command = self.activeCommand else { return }
         guard command.canWrite else {
             logger.trace("command sent, waiting for response...")
             return
@@ -298,18 +298,18 @@ extension StreamCommandQueue: StreamDelegate {
 
         switch (aStream, eventCode) {
 
-            case (self.input, .openCompleted):
+            case (is InputStream, .openCompleted):
                 self.delegate?.streamCommandQueue(self, inputStreamReady: self.input)
                 self.outputActiveCommand()
 
-            case (self.output, .openCompleted):
+            case (is OutputStream, .openCompleted):
                 self.delegate?.streamCommandQueue(self, outputStreamReady: self.output)
                 self.outputActiveCommand()
 
-            case (self.output, .hasSpaceAvailable):
+            case (is OutputStream, .hasSpaceAvailable):
                 self.outputActiveCommand()
 
-            case (self.input, .hasBytesAvailable):
+            case (is InputStream, .hasBytesAvailable):
                 self.inputActiveCommand()
 
             case (_, .endEncountered), (_, .errorOccurred):
